@@ -14,13 +14,15 @@ Something worth mentioning before we start because it's not specified how script
 3. Deploying as a one-time running script or as a worker to k8s.
 4. CI
 
+In addition, [Telegram BOT API](https://core.telegram.org/bots/api) Doesn't support any kinda fetching of message history, so we would use Telegram API (that servers custom TG clients). For obtaining token, please refer to the section **Deployment** below.
+
 #### Logic view
 
 
 What do final script need to do? 
-1. Take a single or a list of [Telegram API](https://core.telegram.org/bots/api) tokens of bots from some source.
+1. Take a single Telegram API session (passed as encrypted string)
 2. Fetch and persist list of all messages with metadata from public chats for given bots.
-3. Remove if requested to.
+3. Remove messages, if needed.
 4. Store results and errors somewhere.
 5. Give the end-user possibility to fetch results from storage.
 
