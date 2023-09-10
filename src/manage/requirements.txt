@@ -1,3 +1,7 @@
 pydantic==2.3.0
 pydantic_core==2.6.3
 pytest-ruff
+pytest
+loguru==0.7.1
+black==23.9.0
+pytest-black==0.3.12

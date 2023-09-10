@@ -1,13 +1,9 @@
-"""Config."""
+"""Config parser. Set up logger."""
 import os
-import sys
 import threading
-from enum import Enum
-from functools import cached_property
-from typing import ClassVar
 
 from loguru import logger
-from pydantic import PositiveInt, ValidationError, field_validator
+from pydantic import ValidationError
 from pydantic.dataclasses import ConfigDict, dataclass
 
 APP_NAME = "tg_manage"
@@ -24,18 +20,16 @@ class ConfigParser:
 
     """Pass lowercased envs names below."""
 
-    bot_token: string
-    secret_key: string
+    bot_token: str
+    secret_key: str
+
 
 class _Config:
 
-    """
-    Thread safe singleton.
-    """
+    """Thread safe singleton."""
 
     _instance = None
     _lock = threading.Lock()
-
 
     def __new__(cls) -> "_Config":
         """Aquire lock and create instance per thread."""
@@ -87,4 +81,3 @@ class _Config:
 
 
 config = _Config().config
-
