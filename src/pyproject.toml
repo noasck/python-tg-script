@@ -1,0 +1,25 @@
+[tool.ruff]
+target-version = "py311"
+
+select = ["ALL"]
+ignore = ["D211", "D212", "ANN101", "ANN102", "ANN002", "ANN003", "SLF"]
+
+fixable = ["ALL"]
+
+extend-exclude = ["*_test.py"]
+force-exclude = true
+
+# Same as Black.
+line-length = 99
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+addopts = "-vv -l --ruff --black --tb=short --capture=sys --color=yes"
+
+
+[tool.black]
+line-length = 99
+target-version = ['py311']
+
