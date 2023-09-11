@@ -33,6 +33,16 @@ jobs:
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
 
+      - name: Configure Git
+        run: |
+          git config user.name "github CI runner"
+
+      - name: Commit Version File
+        run: |
+          git add VERSION
+          git commit -m "Update VERSION file"
+          git push
+
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
