@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Check if its a merge commit
         run: |
-          if [[ "${{ github.event.head_commit.message }}" == *"Merge branch"* ]]; then
+          if [[ "${{ github.event.head_commit.message }}" == *"Merge"* ]]; then
             echo "This is a merge commit, running actions..."
           else
             echo "This is not a merge commit, skipping actions."
