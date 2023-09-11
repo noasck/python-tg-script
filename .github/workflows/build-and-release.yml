@@ -1,0 +1,54 @@
+name: Docker Build and Publish
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set IMAGE_NAME variable
+        run: echo "IMAGE_NAME=my-docker-image" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: make build
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+
+      - name: Run tests
+        run: make test
+
+      - name: Bump version and tag Docker image
+        run: |
+          VERSION=$(cat VERSION)
+          NEW_VERSION=$((VERSION + 1))
+          echo $NEW_VERSION > VERSION
+          docker tag $IMAGE_NAME $IMAGE_NAME:$NEW_VERSION
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github CI runner"
+
+      - name: Commit Version File
+        run: |
+          git add VERSION
+          git commit -m "Update VERSION file"
+          git push
+
+      - name: Login to Docker Hub
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:$NEW_VERSION
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}

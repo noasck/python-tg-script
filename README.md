@@ -49,10 +49,9 @@ Consists of 2 major parts:
 #### Development view
 - Host code on Github.
 - Use Docker CR.
-- Use Github actions CI to:
-    - Run tests;
-    - Check formatting;
-    - Build and Push image to CR; 
+- There are 2 Github Actions Jobs as a CI:
+    - On merge to `main`: **Build** & **Test** & **Bump** version & **Push** to Docker Hub
+    - On commit to open PR: **Build** & **Test** 
 - Use Readme Driven Development.
 
 
@@ -128,3 +127,7 @@ Specific path to run pytest on specific folder could be passed as:
 make test --testpath=/sample/module/to/test
 ```
 
+## How to make it better
+- [ ] Use 2-stage docker builds
+- [ ] Wrap python script in setuptools with `sh` entrypoint.
+- [ ] Handle logs 
