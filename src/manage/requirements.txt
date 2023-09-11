@@ -1,7 +1,10 @@
 pydantic==2.3.0
+Pyrogram==2.0.106
 pydantic_core==2.6.3
 pytest-ruff
 pytest
 loguru==0.7.1
 black==23.9.0
 pytest-black==0.3.12
+TgCrypto==1.2.5
+asyncio==3.4.3

@@ -22,6 +22,8 @@ class ConfigParser:
 
     bot_token: str
     secret_key: str
+    api_id: int
+    api_hash: str
 
 
 class _Config:

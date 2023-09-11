@@ -81,8 +81,30 @@ flowchart TD
 
 ### Deployment
 
-Requirements:
+#### Requirements
 
+- USER Telegram Account, bound to some number.
+- OS: \*nix or Windows probably
+- Docker engine v24+
+
+
+#### Obtaining session file
+Follow this steps to get session file, used in script to operate with Telegram.
+- Go to [Telegram Application creation](https://my.telegram.org/apps) page. Authorize and register an application here in `API Development tool`.
+- Create file `./configs/.env.dev` with these lines:
+``` bash
+    TG_MANAGE_API_ID=# PASTE REAL ID HERE
+    TG_MANAGE_API_HASH=# PASTE HASH without quotes
+    TG_MANAGE_BOT_TOKEN=leave-it-any-string
+    TG_MANAGE_SECRET_KEY=leave-it-any-string
+```
+- Run `make login`.
+- Enter the phone number (only digits, including country code)
+- Enter one-time code that you could find on the device.
+- If job succeded, you should be able to see new user session under `./sessions` folder.
+
+Generated session file could be used for deploying various scripts 
+ 
 
 ### Development
 
@@ -94,13 +116,15 @@ Requirements:
 
 
 #### Makefile options
-Run `make <command>`
+Run `make <command>`, where command could be the following:
+
 - `format` will format python script `manage` with black and ruff. Optionally use `black` or `ruff` separately.
 - `test` runs test suite for `manage` script.
 - `build` builds the latest image of python dockerized script.
-- `clean-tests` removes `/test_manage_tg_script` container.
+- `clean` removes recently runned container. If you need to force remove specific one, please add paramether `--containername=<put-whatever>`.
 
 Specific path to run pytest on specific folder could be passed as:
 ``` sh
 make test --testpath=/sample/module/to/test
 ```
+
