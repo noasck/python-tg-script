@@ -36,6 +36,7 @@ jobs:
           VERSION=$(cat VERSION)
           NEW_VERSION=$((VERSION + 1))
           echo $NEW_VERSION > VERSION
+          echo "VERSION=${NEW_VERSION}" >> $GITHUB_ENV
           docker tag $IMAGE_NAME $IMAGE_NAME:$NEW_VERSION
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
@@ -60,3 +61,4 @@ jobs:
           docker push $IMAGE_NAME:$NEW_VERSION
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          NEW_VERSION: ${{ env.NEW_VERSION }}
