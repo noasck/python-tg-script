@@ -14,12 +14,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set IMAGE_NAME variable
-        run: echo "IMAGE_NAME=my-docker-image" >> $GITHUB_ENV
+        run: echo "IMAGE_NAME=python-tg-script" >> $GITHUB_ENV
 
       - name: Build Docker image
-        run: make build
-        env:
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+        run: make build --IMAGE_NAME=python-tg-script
 
       - name: Run tests
         run: make test

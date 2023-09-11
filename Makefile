@@ -1,10 +1,10 @@
 .PHONY: run-tests test
+IMAGE_NAME =: "python-tg-script"
 testpath := manage
 containername := manage_tg_bot_script
 # Path to the environment file
 TEST_ENV_FILE  =./configs/.env.test
 LOCAL_ENV_FILE =./configs/.env.dev
-IMAGE_NAME = "manage_tg_script"
 
 build:
 	docker build -t $(IMAGE_NAME) -f ./src/Dockerfile.manage .
