@@ -50,8 +50,8 @@ Consists of 2 major parts:
 - Host code on Github.
 - Use Docker CR.
 - There are 2 Github Actions Jobs as a CI:
-    - On merge to `main`: **Build** & **Test** & **Bump** version & **Push** to Docker Hub
-    - On commit to open PR: **Build** & **Test** 
+    - On **ONLY** merge to `main`: **Build** & **Test** & **Bump** version & **Push** to Docker Hub
+    - On commit to open PR: **Build** & **Test**
 - Use Readme Driven Development.
 
 
