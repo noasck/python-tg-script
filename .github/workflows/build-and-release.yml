@@ -16,7 +16,7 @@ jobs:
             echo "This is a merge commit, running actions..."
           else
             echo "This is not a merge commit, skipping actions."
-            exit 0
+            exit 1
           fi
 
       - name: Checkout code
@@ -43,14 +43,17 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "github CI runner bumped version"
+          git config user.name "github CI: build-and-release.yml"
           git config user.email "gh@example.com"
 
       - name: Commit Version File
         run: |
           git add VERSION
-          git commit -m "Update VERSION file"
+          git commit -m "Bump to version: ${NEW_VERSION}"
           git push
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          NEW_VERSION: ${{ env.NEW_VERSION }}
 
       - name: Login to Docker Hub
         run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
