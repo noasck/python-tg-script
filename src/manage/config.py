@@ -21,7 +21,6 @@ class ConfigParser:
     """Pass lowercased envs names below."""
 
     bot_token: str
-    secret_key: str
     api_id: int
     api_hash: str
 

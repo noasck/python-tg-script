@@ -29,7 +29,6 @@ def test_ConfigParser_works():
     parsed = ConfigParser(**envs)
     assert parsed
     assert parsed.bot_token
-    assert parsed.secret_key
 
 
 def test_ConfigParser_required_fields():
@@ -55,7 +54,6 @@ def test_ConfigParser_works():
     parsed = ConfigParser(**envs)
     assert parsed
     assert parsed.bot_token
-    assert parsed.secret_key
 
 
 def test_ConfigParser_required_fields():

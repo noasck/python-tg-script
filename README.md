@@ -8,13 +8,17 @@ Develop a script for a Telegram bot that finds all messages written in public ch
 
 ### Abstract & Considerations
 
+There are 2 sections, that you would be interested at as a script user:
+1. [Deployment](#deployment)
+2. [Development](#development)
+
 Something worth mentioning before we start because it's not specified how script above supposed to be integrated. Besides business logic mentioned in "Objective" section, we need to supply some additional features:
 1. Input&Output: handle external arguments and pass it to script as well as persist script results.
 2. Robustness/Error handling.
-3. Deploying as a one-time running script or as a worker to k8s.
+3. Deploying as a one-time running script.
 4. CI
 
-In addition, [Telegram BOT API](https://core.telegram.org/bots/api) Doesn't support any kinda fetching of message history, so we would use Telegram API (that servers custom TG clients). For obtaining token, please refer to the section **Deployment** below.
+In addition, [Telegram BOT API](https://core.telegram.org/bots/api) Doesn't support any kinda fetching of message history, so we would use Telegram API (that serves custom TG clients). For obtaining token, please refer to the section [**Deployment**](#deployment) below.
 
 #### Logic view
 
@@ -40,18 +44,21 @@ Consists of 2 major parts:
 
 ##### Python script `manage`
 - Contains business logic
-- Could be runned as a standalone script or as worker process subscribed to some source.
-- Implements Adapters: PersistenceAdapter, InputAdapter -- we need to support multiple IO sources and location.
-- Requests to Telegram Bot API performs with pure `requests` library. 
-- If input is passed via ENVs, load ENVs via pydantic.
-
+- Could be runned as a standalone script.
+- Implements Protocols for Input/Output to 
+- Handles throttling
+- Validates input
 
 #### Development view
 - Host code on Github.
 - Use Docker CR.
-- There are 2 Github Actions Jobs as a CI:
-    - On **ONLY** merge to `main`: **Build** & **Test** & **Bump** version & **Push** to Docker Hub
-    - On commit to open PR: **Build** & **Test**
+- Use Github Actions as a CI: on every merge request to main:
+    - Build image
+    - Bump version
+    - Run tests
+    - Commit new version to `Version` file in repo.
+    - Retag image with new version.
+    - Push image to Docker Hub and update latest image.
 - Use Readme Driven Development.
 
 
@@ -62,20 +69,21 @@ Main script is called `deploy` and allows to:
 ``` mermaid
 %%{ init: { 'flowchart': { 'curve': 'stepAfter' } } }%%
 flowchart TD
-    start(Deploy script starts)
-    command{What do we want?}
-    create_storage[Set up persistent storage \n or use an external one]
-    run_job[Run Telegram management script]
-    fetch_results[Load results to local machine]
-    run_job_as_worker[Run script as worker \n in e.g. consumer mode]
-    run_sample_client[Optionally.\n Run sample event producer]
+    start(`./deploy` script)
+    ctor[start `manage`\n script]
+    fetch[fetch Messages batched]
+    fetch2[fetch Messages batched]
+    pers{Need to store results?}
+    pers_proc[Store results]
+    load[Load to the \n local machine]
+    clean[clean resourses]
+    rem[remove Messages batched]
+    fetch_or_remove{Do we need to \n fetch or remove \nmessages?}
 
-    clean[Clean resources]
-    finish[Finish job]
-
-    start --> command
-    command --> |Run once| create_storage --> run_job --> fetch_results --> clean --> finish
-    command --> |Deploy worker| run_job_as_worker --> run_sample_client --> finish
+    start --> ctor --> fetch_or_remove --> |Fetch All Messages| fetch --> pers --> |YES| pers_proc -.-> load
+    fetch_or_remove --> |Remove All| fetch2 --> rem --> pers 
+    fetch_or_remove --> |Remove by list of ids| rem
+    pers --> |NO| clean 
 ```
 
 ### Deployment
