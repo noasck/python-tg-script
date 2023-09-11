@@ -43,6 +43,7 @@ jobs:
       - name: Configure Git
         run: |
           git config user.name "github CI runner bumped version"
+          git config user.email "gh@example.com"
 
       - name: Commit Version File
         run: |
