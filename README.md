@@ -120,11 +120,11 @@ Run `make <command>`, where command could be the following:
 - `format` will format python script `manage` with black and ruff. Optionally use `black` or `ruff` separately.
 - `test` runs test suite for `manage` script.
 - `build` builds the latest image of python dockerized script.
-- `clean` removes recently runned container. If you need to force remove specific one, please add paramether `--containername=<put-whatever>`.
+- `clean` removes recently runned container. If you need to force remove specific one, please add option `containername=<put-whatever>`.
 
 Specific path to run pytest on specific folder could be passed as:
 ``` sh
-make test --testpath=/sample/module/to/test
+make testpath=/sample/module/to/test test
 ```
 
 ## How to make it better
