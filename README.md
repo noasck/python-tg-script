@@ -127,3 +127,7 @@ Specific path to run pytest on specific folder could be passed as:
 make test --testpath=/sample/module/to/test
 ```
 
+## How to make it better
+- [ ] Use 2-stage docker builds
+- [ ] Wrap python script in setuptools with `sh` entrypoint.
+- [ ] Handle logs 
