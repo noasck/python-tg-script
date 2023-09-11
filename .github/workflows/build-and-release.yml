@@ -17,7 +17,7 @@ jobs:
         run: echo "IMAGE_NAME=python-tg-script" >> $GITHUB_ENV
 
       - name: Build Docker image
-        run: make build --IMAGE_NAME=python-tg-script
+        run: make IMAGE_NAME=$IMAGE_NAME
 
       - name: Run tests
         run: make test
