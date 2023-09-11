@@ -49,10 +49,9 @@ Consists of 2 major parts:
 #### Development view
 - Host code on Github.
 - Use Docker CR.
-- Use Github actions CI to:
-    - Run tests;
-    - Check formatting;
-    - Build and Push image to CR; 
+- There are 2 Github Actions Jobs as a CI:
+    - On merge to `main`: **Build** & **Test** & **Bump** version & **Push** to Docker Hub
+    - On commit to open PR: **Build** & **Test** 
 - Use Readme Driven Development.
 
 
