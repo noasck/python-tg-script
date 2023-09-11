@@ -10,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check if its a merge commit
+        run: |
+          if [[ "${{ github.event.head_commit.message }}" == *"Merge branch"* ]]; then
+            echo "This is a merge commit, running actions..."
+          else
+            echo "This is not a merge commit, skipping actions."
+            exit 0
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -33,7 +42,7 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "github CI runner"
+          git config user.name "github CI runner bumped version"
 
       - name: Commit Version File
         run: |
