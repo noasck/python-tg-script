@@ -26,7 +26,6 @@ What do final script need to do?
 4. Store results and errors somewhere.
 5. Give the end-user possibility to fetch results from storage.
 
-Telegram Bot API token [reference](https://core.telegram.org/bots/api#authorizing-your-bot)
 
 #### Process view
 
@@ -80,4 +79,28 @@ flowchart TD
     command --> |Deploy worker| run_job_as_worker --> run_sample_client --> finish
 ```
 
+### Deployment
 
+Requirements:
+
+
+### Development
+
+#### Requirements
+- OS: \*nix or Windows probably
+- Python 3.11+
+- Go language runtime or go compiler
+- Docker engine v24+
+
+
+#### Makefile options
+Run `make <command>`
+- `format` will format python script `manage` with black and ruff. Optionally use `black` or `ruff` separately.
+- `test` runs test suite for `manage` script.
+- `build` builds the latest image of python dockerized script.
+- `clean-tests` removes `/test_manage_tg_script` container.
+
+Specific path to run pytest on specific folder could be passed as:
+``` sh
+make test --testpath=/sample/module/to/test
+```
