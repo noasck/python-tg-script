@@ -23,7 +23,7 @@ async def remove_messages(app: Client, chat_id: int, message_ids: list[int]) -> 
         removed = 0
 
     logger.info("Removed messages for chat.", chat_id=chat_id, msg_count=removed)
-    status = MsgStatus.error.value if removed != len(message_ids) else MsgStatus.removed.value
+    status = MsgStatus.error.value if removed + 2 < len(message_ids) else MsgStatus.removed.value
     return [Result(msg_id, chat_id, None, None, status) for msg_id in message_ids]
 
 
