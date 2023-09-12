@@ -118,7 +118,7 @@ Generated session file could be used for deploying various scripts
 If you chose a `-persist` option, it will create Persistent Volume and Persistent Volume Claim. 
 You could fetch result from it later. In this case, please pass custom filename.
 
-1. Open Github Releases page
+1. Open [Github Releases](https://github.com/noasck/python-tg-script/releases/tag/manual) page
 2. Download latest `deploy` script binary for your platform.
 3. Run a command `./deploy --help` and fill all required params
 
