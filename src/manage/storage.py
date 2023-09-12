@@ -33,5 +33,5 @@ async def handle_results(row_data: list[Result], filename: str) -> None:
         if not file_exists:
             await writer.writerow(list(Result._fields))
 
-        # Write the row data
-        await writer.writerow(row_data)
+        for row in row_data:
+            await writer.writerow(tuple(row))
