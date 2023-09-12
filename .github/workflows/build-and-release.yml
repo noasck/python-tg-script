@@ -104,8 +104,10 @@ jobs:
         files: |
           ./src/deploy/deploy
           ./src/deploy/deploy.exe
-        asset-name: deploy-${{ github.sha }}
-        tag-name: ${{ github.sha }}
+        asset_name: deploy-${{ github.sha }}
+        tag_name: v$(cat VERSION)
+        release_name: Deploy script release v$(cat VERSION)
+        body: Released script via CI
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
