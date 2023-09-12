@@ -89,12 +89,12 @@ jobs:
   
     - name: Build for Linux
       run: |
-        GOARCH=amd64 GOOS=linux go build ./src/deploy -o deploy
+        GOARCH=amd64 GOOS=linux go build -C ./src/deploy -o deploy
       working-directory: ${{ github.workspace }}
   
     - name: Build for Windows
       run: |
-        GOARCH=amd64 GOOS=windows go build ./src/deploy -o deploy.exe
+        GOARCH=amd64 GOOS=windows go build -C ./src/deploy -o deploy.exe
       working-directory: ${{ github.workspace }}
   
     - name: Create Release
