@@ -1,4 +1,5 @@
 # Python Telegram Management Script
+![sample-how-it-works](https://github.com/noasck/python-tg-script/assets/39808592/d8313526-b0d8-4c34-a039-dcf7578f8980)
 
 
 ### Objective
