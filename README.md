@@ -100,10 +100,9 @@ Follow this steps to get session file, used in script to operate with Telegram.
 - Go to [Telegram Application creation](https://my.telegram.org/apps) page. Authorize and register an application here in `API Development tool`.
 - Create file `./configs/.env.dev` with these lines:
 ``` bash
-    TG_MANAGE_API_ID=# PASTE REAL ID HERE
-    TG_MANAGE_API_HASH=# PASTE HASH without quotes
-    TG_MANAGE_BOT_TOKEN=leave-it-any-string
-    TG_MANAGE_SECRET_KEY=leave-it-any-string
+    TG_MANAGE_API_ID=<PASTE API ID HERE>
+    TG_MANAGE_API_HASH=<PASTE API HASH HERE>
+    TG_MANAGE_BOT_TOKEN=None#just leave it none
 ```
 - Run `make login`.
 - Enter the phone number (only digits, including country code)
@@ -134,6 +133,31 @@ Specific path to run pytest on specific folder could be passed as:
 ``` sh
 make testpath=/sample/module/to/test test
 ```
+
+#### Running script locally
+
+First, you need to change your `./configs/.env.dev` file:
+```
+TG_MANAGE_API_ID=#<PASTE A REAL VALUE HERE>
+TG_MANAGE_API_HASH=#<PASTE A REAL VALUE HERE>
+TG_MANAGE_BOT_TOKEN=None
+TG_MANAGE_PERSIST_PATH=./results/sample.result
+TG_MANAGE_REMOVE_ALL=True # set to False if you don't want to remove messages
+```
+
+You could optionally specify:
+
+```
+TG_MANAGE_REMOVE_MESSAGE_IDS=[]#[Paste,IDs,here,in,a,list,of,integeres]
+TG_MANAGE_REMOVE_CHAT_ID=None#Change to real chat id to remove messages from
+```
+
+Then run make command (linux):
+
+``` bash
+    make bottoken="$(cat ./sessions/$(ls ./sessions/ | head -n 1))" local
+```
+This will take first your stored session from `./sessions` folder.
 
 ## How to make it better
 - [ ] Use 2-stage docker builds
