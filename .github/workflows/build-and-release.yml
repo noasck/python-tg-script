@@ -95,7 +95,11 @@ jobs:
     - name: Build for Windows
       run: |
         GOARCH=amd64 GOOS=windows go build -C ./src/deploy -o deploy.exe
-        echo "VERSION=$(cat VERSION)" > >> $GITHUB_ENV
+      working-directory: ${{ github.workspace }}
+    
+    - name: Move Version to GH envs
+      run: |
+        echo "VERSION=$(($(cat VERSION) + 1))" >> $GITHUB_ENV
       working-directory: ${{ github.workspace }}
   
     - name: Create Release
