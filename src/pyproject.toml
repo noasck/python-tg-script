@@ -2,7 +2,7 @@
 target-version = "py311"
 
 select = ["ALL"]
-ignore = ["D211", "D212", "ANN101", "ANN102", "ANN002", "ANN003", "SLF"]
+ignore = ["PYI024", "D211", "D212", "ANN101", "ANN102", "ANN002", "ANN003", "SLF"]
 
 fixable = ["ALL"]
 

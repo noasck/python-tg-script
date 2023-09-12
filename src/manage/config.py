@@ -23,6 +23,11 @@ class ConfigParser:
     bot_token: str
     api_id: int
     api_hash: str
+    persist_path: str | None = None
+    remove_message_ids: list[int] | None = None
+    remove_chat_id: int | None = None
+    remove_all: bool = False
+    batch_size: int = 100
 
 
 class _Config:
