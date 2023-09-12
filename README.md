@@ -93,9 +93,10 @@ flowchart TD
 - USER Telegram Account, bound to some number.
 - OS: \*nix or Windows probably
 - Docker engine v24+
+- k8s cluster locally or remotely with kubeconfig file available
 
 
-#### Obtaining session file
+#### 1. Obtaining session file
 Follow this steps to get session file, used in script to operate with Telegram.
 - Go to [Telegram Application creation](https://my.telegram.org/apps) page. Authorize and register an application here in `API Development tool`.
 - Create file `./configs/.env.dev` with these lines:
@@ -110,7 +111,28 @@ Follow this steps to get session file, used in script to operate with Telegram.
 - If job succeded, you should be able to see new user session under `./sessions` folder.
 
 Generated session file could be used for deploying various scripts 
- 
+
+#### 2. Deploying to k8s
+
+If you chose a `-persist` option, it will create Persistent Volume and Persistent Volume Claim. 
+You could fetch result from it later. In this case, please pass custom filename.
+
+1. Open Github Releases page
+2. Download latest `deploy` script binary for your platform.
+3. Run a command `./deploy --help` and fill all required params
+
+Example command to run a script:
+``` bash
+    ./deploy -kubeconfig ~/.kube/config \
+    -session \../../sessions/userbot_2023-09-12 \
+    -api-id 23724365 -api-hash=59ba78a315db19c7f83cbef4f4aa3d95 \
+    --remove-all true
+```
+
+You could obtain results of fetched messages from PVC like:
+``` bash
+    kubectl cp {namespace}/{pod_name}:{source_path} {destination_path}
+```
 
 ### Development
 
