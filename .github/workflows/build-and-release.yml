@@ -105,7 +105,7 @@ jobs:
           ./src/deploy/deploy
           ./src/deploy/deploy.exe
         asset-name: deploy-${{ github.sha }}
-        tag-name: $(cat VERSION)  
+        tag-name: ${{ github.sha }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
