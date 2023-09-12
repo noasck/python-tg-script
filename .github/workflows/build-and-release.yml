@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-publish:
+  build-and-publish-manage:
     runs-on: ubuntu-latest
 
     steps:
@@ -65,3 +65,63 @@ jobs:
         env:
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           NEW_VERSION: ${{ env.NEW_VERSION }}
+
+  build-and-release-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    
+    - name: Check if its a merge commit
+      run: |
+        if [[ "${{ github.event.head_commit.message }}" == *"Merge"* ]]; then
+          echo "This is a merge commit, running actions..."
+        else
+          echo "This is not a merge commit, skipping actions."
+          exit 1
+        fi
+    
+    - name: Checkout Code
+      uses: actions/checkout@v2
+  
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.x  # You can specify a specific Go version
+  
+    - name: Build for Linux
+      run: |
+        GOARCH=amd64 GOOS=linux go build -o deploy
+      working-directory: ${{ github.workspace }}
+  
+    - name: Build for Windows
+      run: |
+        GOARCH=amd64 GOOS=windows go build -o deploy.exe
+      working-directory: ${{ github.workspace }}
+  
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        files: |
+          deploy
+          deploy.exe
+        asset-name: deploy-${{ github.sha }}
+        tag-name: $(cat VERSION)  
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+    - name: Upload Release Artifacts
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./deploy
+        asset_name: deploy
+        asset_content_type: application/octet-stream
+  
+    - name: Upload Release Artifacts (Windows)
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./deploy.exe
+        asset_name: deploy.exe
+        asset_content_type: application/octet-stream
+  
