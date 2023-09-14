@@ -12,4 +12,4 @@ class MsgStatus(Enum):
     removed = "REMOVED"
 
 
-Result = namedtuple("Result", ["id", "chat_id", "text", "date", "status"])
+Result = namedtuple("Result", ["id", "chat_id", "from_user", "is_self", "text", "date", "status"])

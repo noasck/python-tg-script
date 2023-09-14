@@ -13,7 +13,7 @@ from .helper_types import MsgStatus, Result
 async def remove_messages(app: Client, chat_id: int, message_ids: list[int]) -> list[Result]:
     """Remove messages by list of ids."""
     try:
-        removed = await app.delete_messages(chat_id, message_ids)
+        removed = await app.delete_messages(chat_id, message_ids, revoke=True)
     except RPCError:
         logger.exception(
             "Exception during removing messages",
@@ -23,8 +23,8 @@ async def remove_messages(app: Client, chat_id: int, message_ids: list[int]) -> 
         removed = 0
 
     logger.info("Removed messages for chat.", chat_id=chat_id, msg_count=removed)
-    status = MsgStatus.error.value if removed + 2 < len(message_ids) else MsgStatus.removed.value
-    return [Result(msg_id, chat_id, None, None, status) for msg_id in message_ids]
+    status = MsgStatus.error.value if removed + 1 < len(message_ids) else MsgStatus.removed.value
+    return [Result(msg_id, chat_id, None, "self", None, None, status) for msg_id in message_ids]
 
 
 async def get_public_chats(app: Client) -> list[int]:
@@ -36,7 +36,7 @@ async def get_public_chats(app: Client) -> list[int]:
 
 def extract_ids(msgs: list[Result]) -> list[int]:
     """Return only ids of fetched messages."""
-    return [res.id for res in msgs]
+    return [res.id for res in msgs if res.is_self]
 
 
 async def fetch_messages(
@@ -56,6 +56,8 @@ async def fetch_messages(
                 Result(
                     message.id,
                     chat_id,
+                    message.from_user.id if message.from_user else None,
+                    message.from_user.is_self if message.from_user else False,
                     message.text,
                     message.date,
                     MsgStatus.fetched.value,
